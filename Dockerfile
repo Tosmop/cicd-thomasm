@@ -12,8 +12,6 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
-
 # Crée un utilisateur non-root
 RUN useradd -m appuser
 USER appuser
