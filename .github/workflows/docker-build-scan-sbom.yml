@@ -46,7 +46,7 @@ jobs:
       - name: Generate SBOM with Syft
         uses: anchore/sbom-action@v0.15.4
         with:
-          source: dir:.
+          path: .
           format: syft-json
           output-file: sbom.syft.json
 
