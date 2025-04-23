@@ -49,6 +49,7 @@ jobs:
           path: .
           format: syft-json
           output-file: sbom.syft.json
+          upload-artifact: false
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v4
