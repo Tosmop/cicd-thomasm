@@ -13,6 +13,9 @@ jobs:
     continue-on-error: true
 
     steps:
+      - name: Set GitHub SHA from triggering build
+        run: echo "IMAGE_TAG=dev-${{ github.event.workflow_run.head_sha }}" >> $GITHUB_ENV
+
       - name: Install Trivy
         run: |
           sudo apt-get update
@@ -29,4 +32,4 @@ jobs:
         env:
           TRIVY_SEVERITY: HIGH,CRITICAL
         run: |
-          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKERHUB_USERNAME }}/cicd-thomasm:dev-${{ github.sha }}
+          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKERHUB_USERNAME }}/cicd-thomasm:$IMAGE_TAG
