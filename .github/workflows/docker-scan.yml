@@ -6,7 +6,6 @@ jobs:
   trivy-scan:
     name: Scan container image for vulnerabilities
     runs-on: ubuntu-latest
-    continue-on-error: true  # Ne fait pas échouer le pipeline si vulnérabilités
 
     steps:
       - name: Install Trivy
@@ -17,6 +16,9 @@ jobs:
           echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install -y trivy
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Scan image with Trivy (only HIGH and CRITICAL)
         env:
