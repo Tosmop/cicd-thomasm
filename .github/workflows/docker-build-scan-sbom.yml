@@ -1,4 +1,4 @@
-name: Build and Scan Docker Image
+name: Build, Scan & SBOM generation for Docker Image
 
 on: [push]
 
