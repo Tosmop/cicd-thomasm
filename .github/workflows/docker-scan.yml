@@ -22,4 +22,4 @@ jobs:
         env:
           TRIVY_SEVERITY: HIGH,CRITICAL
         run: |
-          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKERHUB_USERNAME }}/mon-projet:dev-${{ github.sha }}
+          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKERHUB_USERNAME }}/CICD-ThomasM:dev-${{ github.sha }}

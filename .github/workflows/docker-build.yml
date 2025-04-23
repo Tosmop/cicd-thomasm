@@ -25,4 +25,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mon-projet:dev-${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/CICD-ThomasM:dev-${{ github.sha }}
