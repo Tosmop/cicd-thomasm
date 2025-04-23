@@ -3,8 +3,8 @@ name: Build and Scan Docker Image
 on: [push]
 
 jobs:
-  build-push-scan:
-    name: Build, Push and Scan Docker Image
+  build-push-scan-sbom:
+    name: Build, Push, Scan and Generate SBOM
     runs-on: ubuntu-latest
 
     steps:
@@ -42,3 +42,16 @@ jobs:
           TRIVY_SEVERITY: HIGH,CRITICAL
         run: |
           trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKERHUB_USERNAME }}/cicd-thomasm:dev-${{ github.sha }}
+
+      - name: Generate SBOM with Syft
+        uses: anchore/sbom-action@v0.15.4
+        with:
+          source: dir:.
+          format: syft-json
+          output-file: sbom.syft.json
+
+      - name: Upload SBOM as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-syft
+          path: sbom.syft.json
