@@ -1,4 +1,4 @@
-name: Build, Scan & SBOM generation for Docker Image
+name: Build, Scan, SBOM generation & SBOM scan for Docker Image
 
 on: [push]
 
@@ -56,3 +56,17 @@ jobs:
         with:
           name: sbom-syft
           path: sbom.syft.json
+
+      - name: Install Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Scan SBOM with Grype
+        run: |
+          grype sbom:sbom.syft.json -o json > grype-report.json
+
+      - name: Upload Grype scan result
+        uses: actions/upload-artifact@v4
+        with:
+          name: grype-report
+          path: grype-report.json
