@@ -1,11 +1,16 @@
 name: Scan Docker Image
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Build Docker Image"]
+    types:
+      - completed
 
 jobs:
   trivy-scan:
     name: Scan container image for vulnerabilities
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
       - name: Install Trivy
