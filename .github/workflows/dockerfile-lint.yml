@@ -1,0 +1,16 @@
+name: Lint Dockerfile
+
+on: [push]
+
+jobs:
+  lint-dockerfile:
+    name: Run Hadolint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Hadolint in Docker
+        run: |
+          docker run --rm -i hadolint/hadolint hadolint -f json --failure-threshold warning - < Dockerfile
