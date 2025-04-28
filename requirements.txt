@@ -21,3 +21,4 @@ sqlparse==0.4.1
 toml==0.10.2
 locust==1.6.0
 selenium==3.141.0
+guincorn
