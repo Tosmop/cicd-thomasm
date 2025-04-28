@@ -66,3 +66,73 @@ describe('Put item in favourite', () => {
   });
 });
 
+describe('Product filters and sorting', () => {
+  beforeEach(() => {
+    // On commence toujours par visiter la page Home
+    cy.visit('/home');
+  });
+
+  it('Filters products with a minimum price', () => {
+    // Set minimum price
+    cy.get('#min_price').clear().type('50'); // par exemple 50$
+    cy.get('#filter-form').submit();
+
+    // Vérifie que tous les produits affichés ont un prix >= 50
+    cy.get('#product-list h6').each(($price) => {
+      const price = parseFloat($price.text().replace('$', '').trim());
+      expect(price).to.be.gte(50);
+    });
+  });
+
+  it('Filters products with a maximum price', () => {
+    // Set maximum price
+    cy.get('#max_price').clear().type('100'); // par exemple 100$
+    cy.get('#filter-form').submit();
+
+    // Vérifie que tous les produits affichés ont un prix <= 100
+    cy.get('#product-list h6').each(($price) => {
+      const price = parseFloat($price.text().replace('$', '').trim());
+      expect(price).to.be.lte(100);
+    });
+  });
+
+  it('Filters products between minimum and maximum price', () => {
+    cy.get('#min_price').clear().type('30');
+    cy.get('#max_price').clear().type('70');
+    cy.get('#filter-form').submit();
+
+    // Vérifie que tous les produits sont entre 30$ et 70$
+    cy.get('#product-list h6').each(($price) => {
+      const price = parseFloat($price.text().replace('$', '').trim());
+      expect(price).to.be.within(30, 70);
+    });
+  });
+
+  it('Sorts products by price ascending (low to high)', () => {
+    cy.get('#sort').select('asc');
+    cy.get('#filter-form').submit();
+
+    // Vérifie que les prix sont triés par ordre croissant
+    let lastPrice = 0;
+    cy.get('#product-list h6').each(($price) => {
+      const price = parseFloat($price.text().replace('$', '').trim());
+      expect(price).to.be.gte(lastPrice);
+      lastPrice = price;
+    });
+  });
+
+  it('Sorts products by price descending (high to low)', () => {
+    cy.get('#sort').select('desc');
+    cy.get('#filter-form').submit();
+
+    // Vérifie que les prix sont triés par ordre décroissant
+    let lastPrice = Number.MAX_SAFE_INTEGER;
+    cy.get('#product-list h6').each(($price) => {
+      const price = parseFloat($price.text().replace('$', '').trim());
+      expect(price).to.be.lte(lastPrice);
+      lastPrice = price;
+    });
+  });
+});
+
+
