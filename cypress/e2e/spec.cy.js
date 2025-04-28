@@ -62,6 +62,7 @@ describe('Put item in favourite', () => {
 
     // Step 5: Confirm it is empty
     cy.contains('No Product in your favourite list');
+    //end
   });
 });
 
