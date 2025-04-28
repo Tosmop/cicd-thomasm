@@ -1,9 +1,6 @@
 name: E2E Cypress Tests
 
-on:
-  push:
-    branches:
-      - cicd-thomasm
+on: [push]
 
 jobs:
   cypress-run:
