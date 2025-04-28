@@ -18,13 +18,17 @@ FROM gcr.io/distroless/python3-debian12:latest-amd64
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+# Copy the virtual environment
 COPY --from=build-venv /venv /venv
 
+# Set the working directory
 WORKDIR /app
 
+# Copy the app code
 COPY . .
 
+# Expose the application port
 EXPOSE 8080
 
-# Lancer gunicorn proprement
-CMD ["gunicorn", "Project.wsgi:application", "--bind", "0.0.0.0:8080"]
+# Properly launch gunicorn from the virtual environment
+CMD ["/venv/bin/gunicorn", "Project.wsgi:application", "--bind", "0.0.0.0:8080"]
