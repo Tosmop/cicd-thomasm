@@ -19,6 +19,6 @@ jobs:
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          service: cicd-charlotte-deployment
+          service: cicd-thomas-deployment
           image: europe-west1-docker.pkg.dev/cicd-thomas/cicd-artifact-thomas/cicd-thomas:latest
           region: europe-west1
