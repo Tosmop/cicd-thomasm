@@ -1,0 +1,43 @@
+name: E2E Cypress Tests
+
+on: [push]
+
+jobs:
+  cypress-run:
+    name: Run Cypress End-to-End Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Start Django server in background
+        run: |
+          python manage.py migrate
+          python manage.py runserver 0.0.0.0:8080 &
+        env:
+          DJANGO_SETTINGS_MODULE: Project.settings  # ajuste si besoin
+
+      - name: Wait for server to be ready
+        run: |
+          npx wait-on http://localhost:8080
+
+      - name: Install Cypress
+        run: npm install cypress --save-dev
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          start: ''          # pas besoin de démarrer un serveur Node.js
+

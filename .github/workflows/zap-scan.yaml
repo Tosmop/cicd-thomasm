@@ -1,0 +1,18 @@
+name: Perform ZAP Baseline Scan
+
+on: [push]
+
+jobs:
+  zap-scan:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: 'https://cicd-thomas-deployment-503060657025.europe-west1.run.app'
+          fail_action: false
